@@ -1,0 +1,33 @@
+# Provides information about index statistics from mysql.innodb_index_stats
+# Requires persistent statistics to be enabled (default in MySQL 8.0)
+#
+mysql_innodb_index_stats:
+   query: "select database_name as schema_name,table_name,index_name,stat_value*@@innodb_page_size as size_bytes from mysql.innodb_index_stats where stat_name='size';"
+   metrics:
+    - table_name:
+        usage: "LABEL"
+        description: "Table name"
+    - size_bytes:
+        usage: "GAUGE"
+        description: "Index Size in Bytes"
+    - schema_name:
+        usage: "LABEL"
+        description: "Schema Name"
+    - index_name:
+        usage: "LABEL"
+        description: "Index name"
+mysql_innodb_index_stats:
+   query: "select database_name as schema_name,table_name,index_name,stat_value*@@innodb_page_size as leaf_pages_size_bytes from mysql.innodb_index_stats where stat_name='n_leaf_pages';"
+   metrics:
+    - table_name:
+        usage: "LABEL"
+        description: "Table name"
+    - leaf_pages_size_bytes:
+        usage: "GAUGE"
+        description: "Leaf Pages Size in Bytes"
+    - schema_name:
+        usage: "LABEL"
+        description: "Schema Name"
+    - index_name:
+        usage: "LABEL"
+        description: "Index name"

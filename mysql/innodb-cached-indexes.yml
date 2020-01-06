@@ -1,0 +1,17 @@
+# Provides information about cached indexes from Innodb tables from innodb_cached_indexes table.
+#
+mysql_innodb_cached_indexes:
+   query: " SELECT SUBSTRING_INDEX(tables.name, '/', +1 ) AS schema_name, SUBSTRING_INDEX(tables.name, '/', -1 ) AS table_name,   indexes.NAME AS index_name,   cached.N_CACHED_PAGES*@@innodb_page_size AS cached_bytes FROM   INFORMATION_SCHEMA.INNODB_CACHED_INDEXES AS cached,   INFORMATION_SCHEMA.INNODB_INDEXES AS indexes,   INFORMATION_SCHEMA.INNODB_TABLES AS tables WHERE   cached.INDEX_ID = indexes.INDEX_ID   AND indexes.TABLE_ID = tables.TABLE_ID;"
+   metrics:
+    - table_name:
+        usage: "LABEL"
+        description: "Table name"
+    - cached_bytes:
+        usage: "GAUGE"
+        description: "Size Cached in Innodb Buffer Pool"
+    - schema_name:
+        usage: "LABEL"
+        description: "Schema Name"
+    - index_name:
+        usage: "LABEL"
+        description: "Index name"
