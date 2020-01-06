@@ -1,0 +1,40 @@
+# Provides information information for Innodb Tablespaces from information_schema.innodb_tablespaces table
+# For single table tablespaces we are able to map them to tables for others we do not
+# Note: There is innodb_tablespace collector in MySQLD exporter but it is not fully functional
+mysql_innodb_single_tablespace:
+   query: "select regexp_substr(name,'[^/]+',1) as schema_name, regexp_substr(name,'[^/]+',1,2) as table_name, file_size, allocated_size, encryption  from information_schema.INNODB_TABLESPACES where space_type='single';"
+   metrics:
+    - schema_name:
+        usage: "LABEL"
+        description: "Schema Name"
+    - table_name:
+        usage: "LABEL"
+        description: "Table name"
+    - file_size:
+        usage: "GAUGE"
+        description: "File Size as reported on disk"
+    - allocated_size:
+        usage: "GAUGE"
+        description: "Actually Allocated size"
+    - encryption:
+        usage: "LABEL"
+        description: "Is Encrypted"
+mysql_innodb_other_tablespace:
+   query: "select name, space_type, file_size, allocated_size, encryption  from information_schema.INNODB_TABLESPACES where space_type!='single';"
+   metrics:
+    - name:
+        usage: "LABEL"
+        description: "Tablespace Name"
+    - space_type:
+        usage: "LABEL"
+        description: "Tablespace Type"
+    - file_size:
+        usage: "GAUGE"
+        description: "File Size as reported on disk"
+    - allocated_size:
+        usage: "GAUGE"
+        description: "Actually Allocated size"
+    - encryption:
+        usage: "LABEL"
+        description: "Is Encrypted"
+
