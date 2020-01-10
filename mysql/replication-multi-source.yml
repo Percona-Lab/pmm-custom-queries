@@ -1,0 +1,23 @@
+# Additional Metrics for MySQL Multi-Source Replication
+# Originally Implemented by Jervin Real 
+multi_source_repl:
+  query: "SELECT service_state, COUNT(service_state) AS service_state_count FROM performance_schema.replication_connection_status GROUP BY service_state;"
+  metrics:
+    - service_state:
+        usage: "LABEL"
+        description: "Replication thread state name"
+    - service_state_count:
+        usage: "COUNTER"
+        description: "Count by service state name"
+multi_source_repl_delay:
+  query: "SELECT channel_name, Sql_delay, Number_of_workers FROM mysql.slave_relay_log_info;"
+  metrics:
+    - channel_name:
+        usage: "LABEL"
+        description: "Replication channel name"
+    - Sql_delay:
+        usage: "COUNTER"
+        description: "SQL Thread delay in seconds"
+    - Number_of_workers:
+        usage: "COUNTER"
+        description: "Parallel replication workers count for this channel"
