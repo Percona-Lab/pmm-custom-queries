@@ -13,3 +13,6 @@ Percona Monitoring and Management 2.x supports multiple files with custom querie
 
 Location of the files is */usr/local/percona/pmm2/collectors/custom-queries/TECHNOLOGY/RESOLUTION)*    for example if you want custom collector queries to be ran at low resolution for MySQL you should place them to */usr/local/percona/pmm2/collectors/custom-queries/mysql/low-resolution*
 
+
+PostgreSQL folder contains scripts for generating custom query files.
+Queries are based on catalogs so DB names have to be provided for creating queries.
