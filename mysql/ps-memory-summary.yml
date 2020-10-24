@@ -1,0 +1,31 @@
+mysql_performance_schema_memory_summary:
+  query: "SELECT event_name, current_number_of_bytes_used as current_bytes, high_number_of_bytes_used as high_bytes FROM performance_schema.memory_summary_global_by_event_name WHERE current_number_of_bytes_used > 0;"
+  metrics:
+    - event_name:
+        usage: "LABEL"
+        description: "Performance Schema Event Name"
+    - current_bytes:
+        usage: "GAUGE"
+        description: "Memory currently allocated to the Event"
+    - high_bytes:
+        usage: "GAUGE"
+        description: "High Water Mark of Memory allocated to the Event"
+
+mysql_performance_schema_memory_by_account:
+  query: "SELECT user, host, event_name, current_number_of_bytes_used as current_bytes, high_number_of_bytes_used as high_bytes FROM performance_schema.memory_summary_by_account_by_event_name WHERE current_number_of_bytes_used > 0;"
+  metrics:
+    - user:
+        usage: "LABEL"
+        description: "User Name"
+    - host:
+        usage: "LABEL"
+        description: "Host Name"
+    - event_name:
+        usage: "LABEL"
+        description: "Performance Schema Event Name"
+    - current_bytes:
+        usage: "GAUGE"
+        description: "Memory currently allocated to the Event"
+    - high_bytes:
+        usage: "GAUGE"
+        description: "High Water Mark of Memory allocated to the Event"
