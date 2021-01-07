@@ -16,13 +16,13 @@ mysql_innodb_index_stats:
     - index_name:
         usage: "LABEL"
         description: "Index name"
-mysql_innodb_index_stats:
-   query: "select database_name as schema_name,table_name,index_name,stat_value*@@innodb_page_size as leaf_pages_size_bytes from mysql.innodb_index_stats where stat_name='n_leaf_pages';"
+mysql_innodb_index_stats_leaf:
+   query: "select database_name as schema_name,table_name,index_name,stat_value*@@innodb_page_size as pages_size_bytes from mysql.innodb_index_stats where stat_name='n_leaf_pages';"
    metrics:
     - table_name:
         usage: "LABEL"
         description: "Table name"
-    - leaf_pages_size_bytes:
+    - pages_size_bytes:
         usage: "GAUGE"
         description: "Leaf Pages Size in Bytes"
     - schema_name:
