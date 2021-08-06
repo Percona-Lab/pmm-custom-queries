@@ -1,0 +1,21 @@
+pg_class:
+  query: "SELECT current_database() datname, relname, CAST(reltuples AS BIGINT) table_rows, pg_total_relation_size(oid) disk_usage_table_bytes, pg_indexes_size(oid) disk_usage_index_bytes, COALESCE(pg_total_relation_size(reltoastrelid),0) disk_usage_toast_bytes FROM pg_class"
+  metrics:
+    - datname:
+        usage: "LABEL"
+        description: "Name of the database that this table is in"
+    - relname:
+        usage: "LABEL"
+        description: "Name of the table, index, view, etc."
+    - table_rows:
+        usage: "GAUGE"
+        decription: "Number of rows in the table. This is only an estimate used by the planner. It is updated by VACUUM, ANALYZE, and a few DDL commands such as CREATE INDEX"
+    - disk_usage_table_bytes:
+        usage: "GAUGE"
+        description: "Total disk space used by the specified table, including all indexes and TOAST data"
+    - disk_usage_index_bytes:
+        usage: "GAUGE"
+        description: "Total disk space used by indexes attached to the specified table"
+    - disk_usage_toast_bytes:
+        usage: "GAUGE"
+        description: "Total disk space used by TOAST data attached to the specified table"
