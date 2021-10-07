@@ -1,0 +1,20 @@
+# Provides information about auto_increment values.
+#
+mysql_is_auto_increment_column:
+  query: "SELECT table_schema as tbl_schema, table_name as tbl_name, column_name as col_name, auto_increment as auto_inc, pow(2, case data_type when 'tinyint' then 7 when 'smallint' then 15 when 'mediumint' then 23 when 'int' then 31 when 'bigint' then 63 end+(column_type like '% unsigned'))-1 as max_at_value FROM information_schema.tables t JOIN information_schema.columns c USING (table_schema,table_name) WHERE c.extra = 'auto_increment' AND t.auto_increment IS NOT NULL;"
+  metrics:
+    - tbl_schema:
+        usage: "LABEL"
+        description: "Schema name"
+    - tbl_name:
+        usage: "LABEL"
+        description: "Table name"
+    - col_name:
+        usage: "LABEL"
+        description: "Column name"
+    - auto_inc:
+        usage: "GAUGE"
+        description: "current auto_increment value"
+    - max_ai_value:
+        usage: "GAUGE"
+        description: "max auto_increment value"
