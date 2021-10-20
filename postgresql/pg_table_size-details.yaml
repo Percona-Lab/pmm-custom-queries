@@ -1,9 +1,12 @@
 pg_class:
-  query: "SELECT current_database() datname, relname, CAST(reltuples AS BIGINT) table_rows, pg_total_relation_size(oid) disk_usage_table_bytes, pg_indexes_size(oid) disk_usage_index_bytes, COALESCE(pg_total_relation_size(reltoastrelid),0) disk_usage_toast_bytes FROM pg_class"
+  query: "SELECT current_database() datname, pgn.nspname schemaname, pgc.relname, CAST(pgc.reltuples AS BIGINT) table_rows, pg_total_relation_size(pgc.oid) disk_usage_table_bytes, pg_indexes_size(pgc.oid) disk_usage_index_bytes, COALESCE(pg_total_relation_size(pgc.reltoastrelid), 0) disk_usage_toast_bytes FROM pg_class pgc JOIN pg_namespace pgn ON pgc.relnamespace = pgn.oid"
   metrics:
     - datname:
         usage: "LABEL"
         description: "Name of the database that this table is in"
+    - schemaname:
+        usage: "LABEL"
+        description: "Name of the schema that this table is in"
     - relname:
         usage: "LABEL"
         description: "Name of the table, index, view, etc."
